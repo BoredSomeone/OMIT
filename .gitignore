@@ -97,3 +97,14 @@ InitTestScene*.unity*
 
 # Auto-generated scenes by play mode tests
 /[Aa]ssets/[Ii]nit[Tt]est[Ss]cene*.unity*
+
+# 기타 문서 제외
+기타문서
+.vsconfig
+CLAUDE.md
+
+# 유료 에셋 제외
+[Aa]ssets/[Pp]lugins/Sirenix
+[Aa]ssets/[Pp]lugins/Sirenix.meta
+[Aa]ssets/ConsolePro
+[Aa]ssets/ConsolePro.meta

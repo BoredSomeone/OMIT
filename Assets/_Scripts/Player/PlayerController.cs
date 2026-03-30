@@ -1,0 +1,122 @@
+using Sirenix.OdinInspector;
+using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.InputSystem;
+
+public class PlayerController : MonoBehaviour
+{
+    [SerializeField] private Rigidbody2D myrb;
+    [SerializeField] private InputActionAsset actionAsset;
+    [SerializeField] private PlayerControlDataSO _playerControlData;
+
+
+    [SerializeField] private float _baseMaxSpeed;
+    [SerializeField] private float _speedMultiplier = 1;
+    [SerializeField] private float _acceleration = 1;
+    [SerializeField] private float _breakDamping;
+
+    [SerializeField] private Vector2 _lookingVector;
+    [SerializeField, ReadOnly] private Vector2 targetVector;
+
+    private InputAction upAction;
+    private InputAction downAction;
+    private InputAction leftAction;
+    private InputAction rightAction;
+
+    private Vector2 lastInput = Vector2.zero;
+
+    public float maxSpeed => _baseMaxSpeed * _speedMultiplier;
+    public Vector2 lookingVector => _lookingVector;
+
+    public UnityEvent LookingChangeEvent;
+
+    private void Start()
+    {
+        _baseMaxSpeed = _playerControlData.baseMaxSpeed;
+        _acceleration = _playerControlData.baseAcceleration;
+        _breakDamping = _playerControlData.baseBreakDamping;
+
+        upAction = actionAsset.FindAction("Player/Up");
+        downAction = actionAsset.FindAction("Player/Down");
+        leftAction = actionAsset.FindAction("Player/Left");
+        rightAction = actionAsset.FindAction("Player/Right");
+
+        upAction.performed      += _ => { lastInput.y = 1; UpdateInput(); };
+        downAction.performed    += _ => { lastInput.y = -1; UpdateInput(); };
+        leftAction.performed    += _ => { lastInput.x = -1; UpdateInput(); };
+        rightAction.performed   += _ => { lastInput.x = 1; UpdateInput(); };
+
+        upAction.canceled += _ => { lastInput.y = downAction.IsPressed() ? -1 : 0; UpdateInput(); };
+        downAction.canceled += _ => { lastInput.y = upAction.IsPressed() ? 1 : 0; UpdateInput(); };
+        leftAction.canceled += _ => { lastInput.x = rightAction.IsPressed() ? 1 : 0; UpdateInput(); };
+        rightAction.canceled += _ => { lastInput.x = leftAction.IsPressed() ? -1 : 0; UpdateInput(); };
+
+        EnableControl();
+    }
+
+    private void OnDestroy()
+    {
+        DisableControl();
+    }
+
+    private void FixedUpdate()
+    {
+        Move();
+    }
+
+    [Button()]
+    private void UpdateForSO()
+    {
+        _baseMaxSpeed = _playerControlData.baseMaxSpeed;
+        _breakDamping = _playerControlData.baseBreakDamping;
+    }
+
+    private void UpdateInput()
+    {
+        targetVector = lastInput;
+
+        if (targetVector == Vector2.zero)
+            myrb.linearDamping = _breakDamping;
+        else
+            myrb.linearDamping = 0;
+    }
+
+    private void EnableControl()
+    {
+        actionAsset.Enable();
+
+        upAction.Enable();
+        downAction.Enable();
+        leftAction.Enable();
+        rightAction.Enable();
+    }
+
+    private void DisableControl()
+    {
+        upAction.Disable();
+        downAction.Disable();
+        leftAction.Disable();
+        rightAction.Disable();
+    }
+
+    private void Move()
+    {
+        if (targetVector != Vector2.zero)
+        {
+            var force = targetVector * _acceleration;
+
+            if (Mathf.Abs(myrb.linearVelocityX) >= maxSpeed && Mathf.Sign(force.x) == Mathf.Sign(myrb.linearVelocityX))
+                force.x = 0;
+
+            if (Mathf.Abs(myrb.linearVelocityY) >= maxSpeed && Mathf.Sign(force.y) == Mathf.Sign(myrb.linearVelocityY))
+                force.y = 0;
+
+            myrb.AddForce(force);
+            if (_lookingVector != targetVector)
+            {
+                _lookingVector = targetVector;
+                LookingChangeEvent.Invoke();
+            }
+        }
+    }
+}
