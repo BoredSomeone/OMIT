@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] private Rigidbody2D myrb;
     [SerializeField] private InputActionAsset actionAsset;
-    [SerializeField] private PlayerControlDataSO _playerControlData;
+    [SerializeField] private PlayerDefaultStatDataSO _playerControlData;
 
 
     [SerializeField] private float _baseMaxSpeed;

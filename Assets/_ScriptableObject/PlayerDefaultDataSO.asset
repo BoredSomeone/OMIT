@@ -10,8 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9c101526266fb074bb8737c13118d13b, type: 3}
-  m_Name: PlayerControlDataSO
+  m_Name: PlayerDefaultDataSO
   m_EditorClassIdentifier: Assembly-CSharp::PlayerControlDataSO
-  baseMaxSpeed: 5
-  baseAcceleration: 50
-  baseBreakDamping: 5
+  _baseMaxSpeed: 5
+  _baseAcceleration: 20
+  _baseBreakDamping: 5
+  _baseWeaponAttackDamage: 0
+  _baseWeaponAttackSpeed: 0
+  _baseWeaponMoveSpeed: 5
+  _baseWeaponMoveAccel: 0.7
+  _baseWeaponRotateSpeed: 5
+  _baseWeaponRotateAccel: 0.7
+  _baseAttackSightAngle: 50
+  _baseAttackSightRadius: 5

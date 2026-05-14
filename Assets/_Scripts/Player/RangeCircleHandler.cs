@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class RangeCircleHandler : MonoBehaviour
 {
-    [SerializeField] private PlayerControlDataSO pcd;
+    [SerializeField] private PlayerDefaultStatDataSO pcd;
     [SerializeField] private PolygonCollider2D triangle;
     [SerializeField] private CircleCollider2D circle;
     [SerializeField] private Transform circleSpriteObject;
@@ -18,7 +18,7 @@ public class RangeCircleHandler : MonoBehaviour
 
     private void Start()
     {
-        _angle = pcd.baseAttackAngle;
+        _angle = pcd.baseAttackSightAngle;
         updateRange();
     }
 
@@ -37,6 +37,8 @@ public class RangeCircleHandler : MonoBehaviour
         triangle.pathCount = 1;
         triangle.SetPath(0, DrawTriangle(_angle, _radius));
         circleSpriteObject.localScale = Vector3.one * radius * 2;
+
+        transform.eulerAngles = new Vector3(0, 0, -angle / 2);
     }
 
     Vector2[] DrawTriangle(float angle, float radius)

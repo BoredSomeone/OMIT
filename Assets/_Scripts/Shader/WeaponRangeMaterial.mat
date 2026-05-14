@@ -68,7 +68,7 @@ Material:
     m_Ints: []
     m_Floats:
     - PixelSnap: 0
-    - _Angle: 270
+    - _Angle: 50
     - _EnableExternalAlpha: 0
     - _Glossiness: 0.5
     - _Metallic: 0
