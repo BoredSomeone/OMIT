@@ -14,6 +14,6 @@ public class PlayerVisualHandler : MonoBehaviour
     public void ChangeLook()
     {
         weaponPosition.localPosition = pc.lookingVector * WeaponOffset;
-        Debug.Log("change direction");
+        //Debug.Log("change direction");
     }
 }
