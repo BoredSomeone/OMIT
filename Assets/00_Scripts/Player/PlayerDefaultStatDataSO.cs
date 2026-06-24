@@ -12,6 +12,7 @@ public class PlayerDefaultStatDataSO : ScriptableObject
     [Title("weapon")]
     [SerializeField] private float _baseWeaponAttackDamage;
     [SerializeField] private float _baseWeaponAttackSpeed;
+    [SerializeField] private float _baseBulletSpeed;
 
     [Space]
     [SerializeField] private float _baseWeaponMoveSpeed;
@@ -33,4 +34,5 @@ public class PlayerDefaultStatDataSO : ScriptableObject
     public float baseWeaponRotateAccel => _baseWeaponRotateAccel;
     public float baseAttackSightAngle => _baseAttackSightAngle;
     public float baseAttackSightRadius => _baseAttackSightRadius;
+    public float baseBulletSpeed => _baseBulletSpeed;
 }

@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09b4b5aab703797419464b1dc09cfb65, type: 3}
   m_Name: UpgradeDataSO
   m_EditorClassIdentifier: Assembly-CSharp::UpgradeDataSO
+  _playerDefaultStatData: {fileID: 11400000, guid: 8f786ac480bc31849abf1e83ccdca776, type: 2}
   flatAD: 0
   percentAD: 0
   flatAS: 0
@@ -20,3 +21,5 @@ MonoBehaviour:
   percentAngle: 0
   flatRadius: 0
   percentRadius: 0
+  flatBulletSpeed: 0
+  percentBulletSpeed: 0

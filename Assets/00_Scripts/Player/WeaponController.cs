@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 public class WeaponController : MonoBehaviour
@@ -5,13 +6,11 @@ public class WeaponController : MonoBehaviour
     [SerializeField] PlayerDefaultStatDataSO playerDefaultStatData;
     [SerializeField] Transform playerWeaponPosition;
     [SerializeField] Transform Player;
-
-    [SerializeField] float MoveSpeed;
-    [SerializeField] float MoveAccel;
-
-
-    [SerializeField] float rotateSpeed;
-    [SerializeField] float rotateAccel;
+    [Space]
+    [SerializeField, ReadOnly] float MoveSpeed;
+    [SerializeField, ReadOnly] float MoveAccel;
+    [SerializeField, ReadOnly] float rotateSpeed;
+    [SerializeField, ReadOnly] float rotateAccel;
 
     private void Start()
     {
@@ -22,7 +21,7 @@ public class WeaponController : MonoBehaviour
         rotateAccel = playerDefaultStatData.baseWeaponRotateAccel;
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         AngleSet();
         MoveSet();
@@ -31,13 +30,13 @@ public class WeaponController : MonoBehaviour
     {
         Vector3 vector = Player.transform.position - transform.position;
         float angle = Mathf.Atan2(vector.y, vector.x) * Mathf.Rad2Deg;
-        float targetAngle = Mathf.LerpAngle(transform.eulerAngles.z, angle, rotateSpeed * rotateAccel * Time.deltaTime);
+        float targetAngle = Mathf.LerpAngle(transform.eulerAngles.z, angle, rotateSpeed * rotateAccel * Time.fixedDeltaTime);
         Vector3 target = new Vector3(0, 0, targetAngle);
         transform.eulerAngles = target;
     }
     void MoveSet()
     {
         Vector3 target = playerWeaponPosition.position;
-        transform.position = Vector3.Lerp(transform.position, target, MoveSpeed * MoveAccel * Time.deltaTime);
+        transform.position = Vector3.Lerp(transform.position, target, MoveSpeed * MoveAccel * Time.fixedDeltaTime);
     }
 }

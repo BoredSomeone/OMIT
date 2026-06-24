@@ -15,8 +15,9 @@ MonoBehaviour:
   _baseMaxSpeed: 5
   _baseAcceleration: 20
   _baseBreakDamping: 5
-  _baseWeaponAttackDamage: 0
-  _baseWeaponAttackSpeed: 0
+  _baseWeaponAttackDamage: 1
+  _baseWeaponAttackSpeed: 1
+  _baseBulletSpeed: 0.3
   _baseWeaponMoveSpeed: 5
   _baseWeaponMoveAccel: 0.7
   _baseWeaponRotateSpeed: 5

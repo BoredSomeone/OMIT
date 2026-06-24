@@ -4,41 +4,43 @@ using UnityEngine;
 public class RangeCircleHandler : MonoBehaviour
 {
     [SerializeField] private PlayerDefaultStatDataSO pcd;
+    [SerializeField] private UpgradeDataSO upgradeData;
+    [SerializeField] private CompositeCollider2D attackRange;
     [SerializeField] private PolygonCollider2D triangle;
     [SerializeField] private CircleCollider2D circle;
     [SerializeField] private Transform circleSpriteObject;
-    public float angle { get { return _angle; } set { _angle = value; updateRange(); } }
-    public float radius { get { return _radius; } set { _radius = value; updateRange(); } }
+    public Collider2D GetAttackCollider { get { return attackRange; } }
 
     [SerializeField] Material _rangeMaterial;
-
-    private float _angle;
-    private float _radius;
+    [Space]
+    [SerializeField] private float angle;
+    [SerializeField] private float radius;
     int angleId = Shader.PropertyToID("_Angle");
 
     private void Start()
     {
-        _angle = pcd.baseAttackSightAngle;
-        updateRange();
+        angle = upgradeData.CachedSightAngle;
+        radius = upgradeData.CachedSightRadius;
+        upgradeData.OnWeaponStatChanged += UpdateRange;
+        UpdateRange();
     }
 
     [Button]
-    public void changeRange(float angle, float radius)
+    public void ChangeRange(float angle, float radius)
     {
-        _angle = angle;
-        _radius = radius;
-        updateRange();
+        upgradeData.ToUpgradeValue(UpgradeDataSO.WeaponStatType.FlatAngle, angle);
+        upgradeData.ToUpgradeValue(UpgradeDataSO.WeaponStatType.FlatRadius, radius);
     }
 
-    void updateRange()
+    void UpdateRange()
     {
-        _rangeMaterial.SetFloat(angleId, _angle);
-        circle.radius = _radius;
+        _rangeMaterial.SetFloat(angleId, angle);
+        circle.radius = radius;
         triangle.pathCount = 1;
-        triangle.SetPath(0, DrawTriangle(_angle, _radius));
+        triangle.SetPath(0, DrawTriangle(angle, radius));
         circleSpriteObject.localScale = Vector3.one * radius * 2;
 
-        transform.eulerAngles = new Vector3(0, 0, -angle / 2);
+        transform.localEulerAngles = new Vector3(0, 0, -angle / 2);
     }
 
     Vector2[] DrawTriangle(float angle, float radius)
