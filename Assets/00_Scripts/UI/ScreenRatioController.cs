@@ -23,8 +23,8 @@ public class ScreenRatioController : MonoBehaviour
     public Vector2 targetScreenRatio;
     public float mainCameraSize = 10;
 
-    [Range(-1f, 1f)]
-    public float _layoutOffset;
+    [SerializeField, Range(-1f, 1f)]
+    private float _layoutOffset;
 
     public float layoutOffset
     {
@@ -172,13 +172,21 @@ public class ScreenRatioController : MonoBehaviour
 
         else
         {
-            boxTopLeft.anchorMin = Vector2.zero;
-            boxTopLeft.anchorMax = Vector2.zero;
-            boxBotRight.anchorMin = Vector2.one;
-            boxBotRight.anchorMax = Vector2.one;
-
-            mainUIArea.anchorMin = Vector2.zero;
-            mainUIArea.anchorMax = Vector2.one;
+            if (boxTopLeft)
+            {
+                boxTopLeft.anchorMin = Vector2.zero;
+                boxTopLeft.anchorMax = Vector2.zero;
+            }
+            if (boxBotRight)
+            {
+                boxBotRight.anchorMin = Vector2.one;
+                boxBotRight.anchorMax = Vector2.one;
+            }
+            if (mainUIArea)
+            {
+                mainUIArea.anchorMin = Vector2.zero;
+                mainUIArea.anchorMax = Vector2.one;
+            }
 
             resetRect(boxTopLeft, boxBotRight, mainUIArea);
             mainCam.rect = new Rect(0, 0, 1, 1);

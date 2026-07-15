@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class RangeCircleHandler : MonoBehaviour
 {
-    [SerializeField] private PlayerDefaultStatDataSO pcd;
     [SerializeField] private UpgradeDataSO upgradeData;
     [SerializeField] private CompositeCollider2D attackRange;
     [SerializeField] private PolygonCollider2D triangle;
@@ -19,8 +18,14 @@ public class RangeCircleHandler : MonoBehaviour
 
     private void Start()
     {
-        angle = upgradeData.CachedSightAngle;
-        radius = upgradeData.CachedSightRadius;
+        if (!attackRange || !triangle || !circle || !circleSpriteObject || !_rangeMaterial)
+        {
+            Debug.LogError($"{name}: RangeCircleHandler에 필요한 참조가 누락되었습니다.");
+            return;
+        }
+
+        angle = upgradeData.GetCached(UpgradeDataSO.StatType.SightAngle);
+        radius = upgradeData.GetCached(UpgradeDataSO.StatType.SightRadius);
         upgradeData.OnWeaponStatChanged += UpdateRange;
         UpdateRange();
     }
@@ -28,8 +33,8 @@ public class RangeCircleHandler : MonoBehaviour
     [Button]
     public void ChangeRange(float angle, float radius)
     {
-        upgradeData.ToUpgradeValue(UpgradeDataSO.WeaponStatType.FlatAngle, angle);
-        upgradeData.ToUpgradeValue(UpgradeDataSO.WeaponStatType.FlatRadius, radius);
+        upgradeData.ToUpgradeValue(UpgradeDataSO.StatType.SightAngle, false, angle);
+        upgradeData.ToUpgradeValue(UpgradeDataSO.StatType.SightRadius, false, radius);
     }
 
     void UpdateRange()

@@ -21,6 +21,11 @@ public class MapGridCreater : MonoBehaviour
     [Button]
     void CreateMap()
     {
+        if (Images.Length <= 0)
+        {
+            Debug.LogWarning("이미지가 비어있어요. 작동을 중단합니다.");
+            return;
+        }
         Vector2 offset = (size / 2f) - (Vector2)MapElementBase.transform.localScale / 2;
         for (int y = 0; y < size.y; ++y)
         {

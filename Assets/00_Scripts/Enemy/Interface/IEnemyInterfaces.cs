@@ -8,7 +8,7 @@ public interface IHitable
 }
 
 
-public interface EnemyDatas
+public interface IEnemyStats
 {
     public int maxHP { get; }
     public int nowHP { get; }

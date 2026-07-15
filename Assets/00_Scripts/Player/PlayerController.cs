@@ -8,10 +8,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Rigidbody2D myrb;
     [SerializeField] private InputActionAsset actionAsset;
     [SerializeField] private PlayerDefaultStatDataSO _playerControlData;
+    [SerializeField] private UpgradeDataSO _upgradeData;
 
-
-    [SerializeField] private float _baseMaxSpeed;
-    [SerializeField] private float _speedMultiplier = 1;
     [SerializeField] private float _acceleration = 1;
     [SerializeField] private float _breakDamping;
 
@@ -25,14 +23,13 @@ public class PlayerController : MonoBehaviour
 
     private Vector2 lastInput = Vector2.zero;
 
-    public float maxSpeed => _baseMaxSpeed * _speedMultiplier;
+    public float maxSpeed => _upgradeData.GetCached(UpgradeDataSO.StatType.MoveSpeed);
     public Vector2 lookingVector => _lookingVector;
 
     public UnityEvent LookingChangeEvent;
 
     private void Start()
     {
-        _baseMaxSpeed = _playerControlData.baseMaxSpeed;
         _acceleration = _playerControlData.baseAcceleration;
         _breakDamping = _playerControlData.baseBreakDamping;
 
@@ -41,15 +38,15 @@ public class PlayerController : MonoBehaviour
         leftAction = actionAsset.FindAction("Player/Left");
         rightAction = actionAsset.FindAction("Player/Right");
 
-        upAction.performed      += _ => { lastInput.y = 1; UpdateInput(); };
-        downAction.performed    += _ => { lastInput.y = -1; UpdateInput(); };
-        leftAction.performed    += _ => { lastInput.x = -1; UpdateInput(); };
-        rightAction.performed   += _ => { lastInput.x = 1; UpdateInput(); };
+        upAction.performed      += OnUpPerformed;
+        downAction.performed    += OnDownPerformed;
+        leftAction.performed    += OnLeftPerformed;
+        rightAction.performed   += OnRightPerformed;
 
-        upAction.canceled += _ => { lastInput.y = downAction.IsPressed() ? -1 : 0; UpdateInput(); };
-        downAction.canceled += _ => { lastInput.y = upAction.IsPressed() ? 1 : 0; UpdateInput(); };
-        leftAction.canceled += _ => { lastInput.x = rightAction.IsPressed() ? 1 : 0; UpdateInput(); };
-        rightAction.canceled += _ => { lastInput.x = leftAction.IsPressed() ? -1 : 0; UpdateInput(); };
+        upAction.canceled       += OnUpCanceled;
+        downAction.canceled     += OnDownCanceled;
+        leftAction.canceled     += OnLeftCanceled;
+        rightAction.canceled    += OnRightCanceled;
 
         EnableControl();
     }
@@ -57,7 +54,27 @@ public class PlayerController : MonoBehaviour
     private void OnDestroy()
     {
         DisableControl();
+
+        upAction.performed      -= OnUpPerformed;
+        downAction.performed    -= OnDownPerformed;
+        leftAction.performed    -= OnLeftPerformed;
+        rightAction.performed   -= OnRightPerformed;
+
+        upAction.canceled       -= OnUpCanceled;
+        downAction.canceled     -= OnDownCanceled;
+        leftAction.canceled     -= OnLeftCanceled;
+        rightAction.canceled    -= OnRightCanceled;
     }
+
+    private void OnUpPerformed(InputAction.CallbackContext _)    { lastInput.y = 1; UpdateInput(); }
+    private void OnDownPerformed(InputAction.CallbackContext _)  { lastInput.y = -1; UpdateInput(); }
+    private void OnLeftPerformed(InputAction.CallbackContext _)  { lastInput.x = -1; UpdateInput(); }
+    private void OnRightPerformed(InputAction.CallbackContext _) { lastInput.x = 1; UpdateInput(); }
+
+    private void OnUpCanceled(InputAction.CallbackContext _)     { lastInput.y = downAction.IsPressed() ? -1 : 0; UpdateInput(); }
+    private void OnDownCanceled(InputAction.CallbackContext _)   { lastInput.y = upAction.IsPressed() ? 1 : 0; UpdateInput(); }
+    private void OnLeftCanceled(InputAction.CallbackContext _)   { lastInput.x = rightAction.IsPressed() ? 1 : 0; UpdateInput(); }
+    private void OnRightCanceled(InputAction.CallbackContext _)  { lastInput.x = leftAction.IsPressed() ? -1 : 0; UpdateInput(); }
 
     private void FixedUpdate()
     {
@@ -67,7 +84,6 @@ public class PlayerController : MonoBehaviour
     [Button()]
     private void UpdateForSO()
     {
-        _baseMaxSpeed = _playerControlData.baseMaxSpeed;
         _breakDamping = _playerControlData.baseBreakDamping;
     }
 

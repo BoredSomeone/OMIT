@@ -1,10 +1,11 @@
 ﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-public class EnemyBase : MonoBehaviour, IHitable, EnemyDatas
+public class EnemyBase : MonoBehaviour, IHitable, IEnemyStats
 {
     [SerializeField] private Collider2D _myCol;
     [SerializeField] private Slider hpBar;
+    [SerializeField] private float hpScale = 1;
     [SerializeField] private int _maxHP = 1;
     [SerializeField] private int _nowHP = 0;
 
@@ -13,6 +14,7 @@ public class EnemyBase : MonoBehaviour, IHitable, EnemyDatas
     private EnemySpawner _spawner;
 
     [SerializeField] Vector2 TargetOffset;
+    [SerializeField] private LevelManagerSO levelManager;
 
     public float getMoveSpeed => moveSpeedBase * moveSpeedRatio;
 
@@ -22,12 +24,17 @@ public class EnemyBase : MonoBehaviour, IHitable, EnemyDatas
     public Collider2D getCollider => _myCol;
     public Vector2 GetTargetPoint => (Vector2)transform.position + TargetOffset;
 
-    private void Start()
+    protected virtual void Start()
     {
+        _maxHP = Mathf.FloorToInt(levelManager.baseHP * hpScale);
+        _nowHP = _maxHP;
+
         if (_myCol is null)
             _myCol = GetComponent<Collider2D>();
 
-        _nowHP = _maxHP;
+        if (_myCol == null || _myCol.attachedRigidbody == null)
+            Debug.LogError($"{name}: Collider2D 또는 Rigidbody2D가 없습니다.");
+
         if (hpBar)
         {
             hpBar.maxValue = _maxHP;

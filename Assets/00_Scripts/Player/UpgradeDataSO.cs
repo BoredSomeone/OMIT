@@ -1,50 +1,45 @@
 using System;
+using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "UpgradeDataSO", menuName = "Scriptable Objects/UpgradeDataSO")]
-public class UpgradeDataSO : ScriptableObject
+public class UpgradeDataSO : SerializedScriptableObject
 {
-    public enum WeaponStatType
+    public enum StatType
     {
-        FlatAD, PercentAD,
-        FlatAS, PercentAS,
-        FlatAngle, PercentAngle,
-        FlatRadius, PercentRadius,
-        FlatBulletSpeed, PercentBulletSpeed,
+        AttackDamage,
+        AttackSpeed,
+        SightAngle,
+        SightRadius,
+        BulletSpeed,
+        MoveSpeed,
+        WeaponMoveSpeed,
+        WeaponMoveAccel,
+        WeaponRotateSpeed,
+        WeaponRotateAccel,
     }
 
     [SerializeField] PlayerDefaultStatDataSO _playerDefaultStatData;
-    [Title("Weapon")]
-    //attack damage
-    [SerializeField, ReadOnly] private float flatAD;
-    [SerializeField, ReadOnly] private float percentAD;
 
-    //attack speed
-    [SerializeField, ReadOnly] private float flatAS;
-    [SerializeField, ReadOnly] private float percentAS;
+    [Title("Upgrade")]
+    [ReadOnly] private Dictionary<StatType, float> flat = new();
+    [ReadOnly] private Dictionary<StatType, float> percent = new();
+    [ReadOnly] private Dictionary<StatType, float> cached = new();
 
-    //attack angle
-    [SerializeField, ReadOnly] private float flatAngle;
-    [SerializeField, ReadOnly] private float percentAngle;
-
-    //attack radius
-    [SerializeField, ReadOnly] private float flatRadius;
-    [SerializeField, ReadOnly] private float percentRadius;
-
-    [SerializeField, ReadOnly] private float flatBulletSpeed;
-    [SerializeField, ReadOnly] private float percentBulletSpeed;
-
-    public float FlatAD => flatAD;
-    public float PercentAD => percentAD;
-    public float FlatAS => flatAS;
-    public float PercentAS => percentAS;
-    public float FlatAngle => flatAngle;
-    public float PercentAngle => percentAngle;
-    public float FlatRadius => flatRadius;
-    public float PercentRadius => percentRadius;
-    public float FlatBulletSpeed => flatBulletSpeed;
-    public float PercentBulletSpeed => percentBulletSpeed;
+    static readonly Dictionary<StatType, Func<PlayerDefaultStatDataSO, float>> baseGetters = new()
+    {
+        { StatType.AttackDamage,      d => d.baseWeaponAttackDamage },
+        { StatType.AttackSpeed,       d => d.baseWeaponAttackSpeed },
+        { StatType.SightAngle,        d => d.baseAttackSightAngle },
+        { StatType.SightRadius,       d => d.baseAttackSightRadius },
+        { StatType.BulletSpeed,       d => d.baseBulletSpeed },
+        { StatType.MoveSpeed,         d => d.baseMaxSpeed },
+        { StatType.WeaponMoveSpeed,   d => d.baseWeaponMoveSpeed },
+        { StatType.WeaponMoveAccel,   d => d.baseWeaponMoveAccel },
+        { StatType.WeaponRotateSpeed, d => d.baseWeaponRotateSpeed },
+        { StatType.WeaponRotateAccel, d => d.baseWeaponRotateAccel },
+    };
 
     public event Action OnWeaponStatChanged;
 
@@ -60,59 +55,36 @@ public class UpgradeDataSO : ScriptableObject
     }
 
     [Button]
-    public void AddUpgrade(WeaponStatType type, float value)
+    public void AddUpgrade(StatType type, bool isPercent, float value)
     {
-        switch (type)
-        {
-            case WeaponStatType.FlatAD:             flatAD              += value; break;
-            case WeaponStatType.PercentAD:          percentAD           += value; break;
-            case WeaponStatType.FlatAS:             flatAS              += value; break;
-            case WeaponStatType.PercentAS:          percentAS           += value; break;
-            case WeaponStatType.FlatAngle:          flatAngle           += value; break;
-            case WeaponStatType.PercentAngle:       percentAngle        += value; break;
-            case WeaponStatType.FlatRadius:         flatRadius          += value; break;
-            case WeaponStatType.PercentRadius:      percentRadius       += value; break;
-            case WeaponStatType.FlatBulletSpeed:    flatBulletSpeed     += value; break;
-            case WeaponStatType.PercentBulletSpeed: percentBulletSpeed  += value; break;
-        }
-        OnWeaponStatChanged?.Invoke();
-    }
-    public void ToUpgradeValue(WeaponStatType type, float value)
-    {
-        switch (type)
-        {
-            case WeaponStatType.FlatAD: flatAD = value; break;
-            case WeaponStatType.PercentAD: percentAD = value; break;
-            case WeaponStatType.FlatAS: flatAS = value; break;
-            case WeaponStatType.PercentAS: percentAS = value; break;
-            case WeaponStatType.FlatAngle: flatAngle = value; break;
-            case WeaponStatType.PercentAngle: percentAngle = value; break;
-            case WeaponStatType.FlatRadius: flatRadius = value; break;
-            case WeaponStatType.PercentRadius: percentRadius = value; break;
-            case WeaponStatType.FlatBulletSpeed: flatBulletSpeed = value; break;
-            case WeaponStatType.PercentBulletSpeed: percentBulletSpeed = value; break;
-        }
-        OnWeaponStatChanged?.Invoke();
-    }
-    public void ResetAllUpgrade()
-    {
-        flatAD = flatAS = percentAD = percentAS = 0;
-        flatAngle = percentAngle = flatRadius = percentRadius = 0;
+        var dict = isPercent ? percent : flat;
+        dict[type] = dict.GetValueOrDefault(type) + value;
         OnWeaponStatChanged?.Invoke();
     }
 
-    public float CachedAttackDamage { get; private set; }
-    public float CachedAttackSpeed { get; private set; }
-    public float CachedSightAngle { get; private set; }
-    public float CachedSightRadius { get; private set; }
-    public float CachedBulletSpeed { get; private set; }
+    public void ToUpgradeValue(StatType type, bool isPercent, float value)
+    {
+        var dict = isPercent ? percent : flat;
+        dict[type] = value;
+        OnWeaponStatChanged?.Invoke();
+    }
+
+    public void ResetAllUpgrade()
+    {
+        flat.Clear();
+        percent.Clear();
+        OnWeaponStatChanged?.Invoke();
+    }
+
+    /// <summary>업그레이드가 반영된 최종 스탯 값을 반환한다.</summary>
+    public float GetCached(StatType type) => cached.GetValueOrDefault(type);
+
     private void CalculateStats()
     {
-        CachedAttackDamage = (_playerDefaultStatData.baseWeaponAttackDamage + FlatAD)     * (1 + PercentAD);
-        CachedAttackSpeed  = (_playerDefaultStatData.baseWeaponAttackSpeed  + FlatAS)     * (1 + PercentAS);
-        CachedSightAngle   = (_playerDefaultStatData.baseAttackSightAngle   + FlatAngle)  * (1 + PercentAngle);
-        CachedSightRadius  = (_playerDefaultStatData.baseAttackSightRadius  + FlatRadius) * (1 + PercentRadius);
-        CachedAttackSpeed  = (_playerDefaultStatData.baseWeaponAttackSpeed  + FlatAS)     * (1 + PercentAS);
-        CachedBulletSpeed  = (_playerDefaultStatData.baseBulletSpeed        + FlatAS)     * (1 +    PercentBulletSpeed);
+        foreach (var (type, getBase) in baseGetters)
+        {
+            float baseValue = getBase(_playerDefaultStatData);
+            cached[type] = (baseValue + flat.GetValueOrDefault(type)) * (1 + percent.GetValueOrDefault(type));
+        }
     }
 }

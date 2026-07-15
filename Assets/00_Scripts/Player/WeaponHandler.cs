@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,6 @@ using UnityEngine.Pool;
 
 public class WeaponHandler : MonoBehaviour
 {
-    [SerializeField] PlayerDefaultStatDataSO _playerDefaultStatData;
     [SerializeField] UpgradeDataSO _upgradeData;
     [SerializeField] private RangeCircleHandler _rangeCircleHandler;
     [SerializeField] Transform player;
@@ -41,10 +41,18 @@ public class WeaponHandler : MonoBehaviour
     {
         while (true)
         {
-            if (TryFindAttackTarget(out var target))
+            try
             {
-                Shoot(target);
-                await UniTask.Delay((int)(1000f / _upgradeData.CachedAttackSpeed), DelayType.DeltaTime, cancellationToken: token);
+                float attackSpeed = _upgradeData.GetCached(UpgradeDataSO.StatType.AttackSpeed);
+                if (TryFindAttackTarget(out var target) && attackSpeed > 0)
+                {
+                    Shoot(target);
+                    await UniTask.Delay((int)(1000f / attackSpeed), DelayType.DeltaTime, cancellationToken: token);
+                }
+            }
+            catch (System.Exception e) when (e is not OperationCanceledException)
+            {
+                Debug.LogException(e);
             }
             await UniTask.WaitForEndOfFrame(token);
         }
@@ -78,7 +86,7 @@ public class WeaponHandler : MonoBehaviour
     {
         var bullet = _bulletPool.Get();
 
-        bullet.Shoot(target.GetTargetPoint, _upgradeData.CachedBulletSpeed, _upgradeData, _bulletPool);
+        bullet.Shoot(target.GetTargetPoint, _upgradeData.GetCached(UpgradeDataSO.StatType.BulletSpeed), _upgradeData, _bulletPool);
     }
 
 

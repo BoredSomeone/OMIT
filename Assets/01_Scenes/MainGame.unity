@@ -791,8 +791,7 @@ MonoBehaviour:
   myrb: {fileID: 7907050}
   actionAsset: {fileID: -944628639613478452, guid: 8a52054148f0aa3458254bf26ad43165, type: 3}
   _playerControlData: {fileID: 11400000, guid: 8f786ac480bc31849abf1e83ccdca776, type: 2}
-  _baseMaxSpeed: 0
-  _speedMultiplier: 1
+  _upgradeData: {fileID: 11400000, guid: baa6053d18221ad469c7ece5d43510d2, type: 2}
   _acceleration: 10
   _breakDamping: 0
   _lookingVector: {x: 0, y: 0}
@@ -7972,7 +7971,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f2af6aaef998a940936306e55405802, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RangeCircleHandler
-  pcd: {fileID: 11400000, guid: 8f786ac480bc31849abf1e83ccdca776, type: 2}
   upgradeData: {fileID: 11400000, guid: baa6053d18221ad469c7ece5d43510d2, type: 2}
   attackRange: {fileID: 1331099051}
   triangle: {fileID: 584133611}
@@ -11323,7 +11321,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0457485c73e5d804eaa54d4d9aee9536, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WeaponContoller
-  _playerDefaultStatData: {fileID: 11400000, guid: 8f786ac480bc31849abf1e83ccdca776, type: 2}
   _upgradeData: {fileID: 11400000, guid: baa6053d18221ad469c7ece5d43510d2, type: 2}
   _rangeCircleHandler: {fileID: 197972149}
   player: {fileID: 7907048}
@@ -11340,13 +11337,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bafedaa7788fad4c840adac84f344d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WeaponController
-  playerDefaultStatData: {fileID: 11400000, guid: 8f786ac480bc31849abf1e83ccdca776, type: 2}
+  upgradeData: {fileID: 11400000, guid: baa6053d18221ad469c7ece5d43510d2, type: 2}
   playerWeaponPosition: {fileID: 42309926}
   Player: {fileID: 7907048}
-  MoveSpeed: 0
-  MoveAccel: 0
-  rotateSpeed: 0
-  rotateAccel: 0
 --- !u!1 &289635983
 GameObject:
   m_ObjectHideFlags: 0
@@ -38073,11 +38066,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Enemy_AluminumCan
   _myCol: {fileID: 917430379}
   hpBar: {fileID: 511070704}
+  hpScale: 1
   _maxHP: 5
   _nowHP: 0
   moveSpeedBase: 1
   moveSpeedRatio: 1
   TargetOffset: {x: 0, y: 0}
+  levelManager: {fileID: 11400000, guid: 2adbed65c0c1b704ea5fd565a988ba9b, type: 2}
+  player: {fileID: 7907048}
+  speed: 3
+  dashInterval: 0.5
 --- !u!50 &917430378
 Rigidbody2D:
   serializedVersion: 5
@@ -38086,14 +38084,14 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 917430376}
-  m_BodyType: 1
+  m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDamping: 0
   m_AngularDamping: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -53430,7 +53428,6 @@ GameObject:
   - component: {fileID: 1331099050}
   - component: {fileID: 1331099052}
   - component: {fileID: 1331099051}
-  - component: {fileID: 1331099053}
   m_Layer: 0
   m_Name: RangeCollider
   m_TagString: Untagged
@@ -53670,19 +53667,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &1331099053
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1331099049}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd73beff4c55c7843857dedc3cf6791f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WeaponSight
-  weaponHanlder: {fileID: 0}
 --- !u!1 &1338806837
 GameObject:
   m_ObjectHideFlags: 0
