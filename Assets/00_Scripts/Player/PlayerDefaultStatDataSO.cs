@@ -4,12 +4,12 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "PlayerDefaultStatDataSO", menuName = "Scriptable Objects/PlayerDefaultStatDataSO")]
 public class PlayerDefaultStatDataSO : ScriptableObject
 {
-    [Title("move")]
+    [Title("Move")]
     [SerializeField] private float _baseMaxSpeed;
     [SerializeField] private float _baseAcceleration;
     [SerializeField] private float _baseBreakDamping;
 
-    [Title("weapon")]
+    [Title("Weapon")]
     [SerializeField] private float _baseWeaponAttackDamage;
     [SerializeField] private float _baseWeaponAttackSpeed;
     [SerializeField] private float _baseBulletSpeed;

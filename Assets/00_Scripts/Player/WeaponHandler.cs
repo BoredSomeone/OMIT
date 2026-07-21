@@ -20,8 +20,8 @@ public class WeaponHandler : MonoBehaviour
 
     private void Start()
     {
-        var cancleToken = this.GetCancellationTokenOnDestroy();
-        FindTarget(cancleToken).Forget();
+        var cancelToken = this.GetCancellationTokenOnDestroy();
+        FindTarget(cancelToken).Forget();
 
         _bulletPool = new ObjectPool<PlayerBullet>(
             createFunc: () => Instantiate(bulletPrefab).GetComponent<PlayerBullet>(),
@@ -52,7 +52,7 @@ public class WeaponHandler : MonoBehaviour
             }
             catch (System.Exception e) when (e is not OperationCanceledException)
             {
-                Debug.LogException(e);
+                Debug.LogError(e);
             }
             await UniTask.WaitForEndOfFrame(token);
         }

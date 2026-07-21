@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5834b5087d578d24c926ce20cd31e6d6, type: 3}
-  m_Name: Enemys_Level1_ContentUpdateGroupSchema
+  m_Name: BossEnemy_ContentUpdateGroupSchema
   m_EditorClassIdentifier: Unity.Addressables.Editor::UnityEditor.AddressableAssets.Settings.GroupSchemas.ContentUpdateGroupSchema
-  m_Group: {fileID: 11400000, guid: 8379be812d1651940af8b28be003b481, type: 2}
+  m_Group: {fileID: 11400000, guid: f5398927b84c02c42aa60dd09e808cf9, type: 2}
   m_StaticContent: 0

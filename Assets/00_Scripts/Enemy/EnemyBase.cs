@@ -8,13 +8,17 @@ public class EnemyBase : MonoBehaviour, IHitable, IEnemyStats
     [SerializeField] private float hpScale = 1;
     [SerializeField] private int _maxHP = 1;
     [SerializeField] private int _nowHP = 0;
+    [SerializeField] protected EnemyExpTableSO enemyExpTable;
+    [SerializeField] protected Transform player;
 
     [SerializeField] private float moveSpeedBase = 1;
     [SerializeField] private float moveSpeedRatio = 1;
-    private EnemySpawner _spawner;
 
     [SerializeField] Vector2 TargetOffset;
-    [SerializeField] private LevelManagerSO levelManager;
+    [SerializeField] protected LevelManagerSO levelManager;
+    [SerializeField] protected int exp;
+
+    private EnemySpawner _spawner;
 
     public float getMoveSpeed => moveSpeedBase * moveSpeedRatio;
 
@@ -26,8 +30,31 @@ public class EnemyBase : MonoBehaviour, IHitable, IEnemyStats
 
     protected virtual void Start()
     {
+    }
+
+    protected virtual void InitExp()
+    {
+        exp = enemyExpTable.GetEXP(typeof(EnemyBase));
+    }
+
+    public void MoveSpeedRatioChange(float speedRatio)
+    {
+        moveSpeedRatio += speedRatio;
+        if (moveSpeedRatio <= 0.1f)
+            moveSpeedRatio = 0.1f;
+    }
+
+    /// <summary>
+    /// 이 적을 생성/회수할 EnemySpawner를 등록합니다. 사망 시 풀로 반환하기 위해 사용됩니다.
+    /// </summary>
+    public void InitEnemy(EnemySpawner spawner, Transform player)
+    {
+        _spawner = spawner;
+        this.player = player;
+
         _maxHP = Mathf.FloorToInt(levelManager.baseHP * hpScale);
         _nowHP = _maxHP;
+        InitExp();
 
         if (_myCol is null)
             _myCol = GetComponent<Collider2D>();
@@ -41,21 +68,6 @@ public class EnemyBase : MonoBehaviour, IHitable, IEnemyStats
             hpBar.value = _nowHP;
             hpBar.minValue = 0;
         }
-    }
-
-    public void moveSpeedRatioChange(float speedRatio)
-    {
-        moveSpeedRatio += speedRatio;
-        if (moveSpeedRatio <= 0.1f)
-            moveSpeedRatio = 0.1f;
-    }
-
-    /// <summary>
-    /// 이 적을 생성/회수할 EnemySpawner를 등록합니다. 사망 시 풀로 반환하기 위해 사용됩니다.
-    /// </summary>
-    public void SetSpawner(EnemySpawner spawner)
-    {
-        _spawner = spawner;
     }
 
     public void Hit(int damage)
@@ -73,6 +85,8 @@ public class EnemyBase : MonoBehaviour, IHitable, IEnemyStats
             _spawner.ReleaseObject(GetType(), gameObject);
         else
             Destroy(gameObject);
+
+        levelManager.AddEXP(exp);
     }
 
 #if UNITY_EDITOR

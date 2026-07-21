@@ -1,11 +1,11 @@
 using Cysharp.Threading.Tasks;
 using System.Threading;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [SelectionBase]
 public class Enemy_AluminumCan : EnemyBase
 {
-    [SerializeField] Transform player;
     [SerializeField] float speed;
     [SerializeField] float dashInterval;
 
@@ -15,6 +15,11 @@ public class Enemy_AluminumCan : EnemyBase
 
         var cancelToken = this.GetCancellationTokenOnDestroy();
         Move(cancelToken).Forget();
+    }
+
+    protected override void InitExp()
+    {
+        exp = enemyExpTable.GetEXP(typeof(Enemy_AluminumCan));
     }
 
     async UniTaskVoid Move(CancellationToken token)

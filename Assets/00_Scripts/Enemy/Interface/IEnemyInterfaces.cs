@@ -13,5 +13,5 @@ public interface IEnemyStats
     public int maxHP { get; }
     public int nowHP { get; }
 
-    public void moveSpeedRatioChange(float speedRatio);
+    public void MoveSpeedRatioChange(float speedRatio);
 }

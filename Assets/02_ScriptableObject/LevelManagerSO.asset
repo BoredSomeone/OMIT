@@ -12,4 +12,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b9a76d3504b24a43a6492ea20b10a03, type: 3}
   m_Name: LevelManagerSO
   m_EditorClassIdentifier: Assembly-CSharp::LevelManagerSO
-  _killsToLevelUp: 0
+  _baseRequireEXP: 25
+  _baseNumSpawnEnemy: 1
+  _baseSpawnEnemyDelay: 3
+  _level: 1
+  _nowEXP: 0
+  _requireEXP: 25
+  _baseHP: 105
+  _numEnemySpawn: 1
+  _enemySpawnDelay: 2.7
+  _spawnInfos:
+  - level: 1
+    BossKey: 
+    EnemyWeights:
+    - TypeName: Enemy_AluminumCan, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      weight: 1
+  - level: 3
+    BossKey: 
+    EnemyWeights: []
+  _spawnInfo:
+    level: 1
+    BossKey: 
+    EnemyWeights:
+    - TypeName: Enemy_AluminumCan, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      weight: 1
+  spawnBossEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  SpawnInfoUpdateEvent:
+    m_PersistentCalls:
+      m_Calls: []

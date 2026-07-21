@@ -10,14 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
-  m_Name: Enemys_Level1
+  m_Name: NormalEnemy
   m_EditorClassIdentifier: Unity.Addressables.Editor::UnityEditor.AddressableAssets.Settings.AddressableAssetGroup
-  m_GroupName: Enemys_Level1
-  m_GUID: 8b62643b2f8afb44784b4c0657d85838
-  m_SerializeEntries: []
+  m_GroupName: NormalEnemy
+  m_GUID: 4dc7d4ea95f63f1429f447ae171cf8c9
+  m_SerializeEntries:
+  - m_GUID: 80acf621ed0efe045856c5d48f7ef297
+    m_Address: Assets/03_Prefabs/NormalEnemys/Enemy_AluminumCan.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - NormalEnemy
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: ce3764cfc990c5344b7e0792f513c111, type: 2}
   m_SchemaSet:
     m_Schemas:
-    - {fileID: 11400000, guid: 6462be9c34316a149a1ac0c086514412, type: 2}
-    - {fileID: 11400000, guid: ed1f3b16a51ac7a44991a45d08d235bf, type: 2}
+    - {fileID: 11400000, guid: f987716509ea2294caa7ae8d5f36de19, type: 2}
+    - {fileID: 11400000, guid: 731ae60f5873a5f478c65193f9de91b8, type: 2}

@@ -9,11 +9,6 @@ public class MapGridCreater : MonoBehaviour
     [SerializeField] private Vector2 size;
 
     private Queue<GameObject> generatedElements = new();
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    private void Awake()
-    {
-        
-    }
 
     /// <summary>
     /// size 크기만큼 그리드를 생성합니다.
