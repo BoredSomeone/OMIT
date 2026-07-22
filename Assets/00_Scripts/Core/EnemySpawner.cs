@@ -71,6 +71,8 @@ public class EnemySpawner : MonoBehaviour
             }
             catch (System.Exception e) when (e is not System.OperationCanceledException)
             {
+                if (levelManager.spawnInfo.SpawnTarget is null)
+                    Debug.LogError($"{levelManager.level}에 유효한 EnemyWeights가 없습니다.");
                 Debug.LogError(e.ToString());
             }
             await UniTask.WaitForEndOfFrame(cancellationToken: token);
@@ -185,32 +187,32 @@ public class EnemySpawner : MonoBehaviour
             left = mapRect.left,
             right = mapRect.right,
             top = mapRect.top,
-            bot = playerRect.top
-        });
+            bot = Mathf.Min(playerRect.top, mapRect.top)
+        }); //플레이어 기준 위
 
         rects.Add(new SpawnRect
         {
             left = mapRect.left,
-            right = playerRect.left,
-            top = playerRect.top,
-            bot = playerRect.bot,
-        });
+            right = Mathf.Max(playerRect.left, mapRect.left),
+            top = Mathf.Min(playerRect.top, mapRect.top),
+            bot = Mathf.Max(playerRect.bot, mapRect.bot)
+        }); //플레이어 기준 왼쪽
 
         rects.Add(new SpawnRect
         {
-            left = playerRect.right,
+            left = Mathf.Min(playerRect.right, mapRect.right),
             right = mapRect.right,
-            top = playerRect.top,
-            bot = playerRect.bot
-        });
+            top = Mathf.Min(playerRect.top, mapRect.top),
+            bot = Mathf.Max(playerRect.bot, mapRect.bot)
+        }); //플레이어 기준 오른쪽
 
         rects.Add(new SpawnRect
         {
             left = mapRect.left,
             right = mapRect.right,
-            top = playerRect.bot,
+            top = Mathf.Max(playerRect.bot, mapRect.bot),
             bot = mapRect.bot
-        });
+        }); //플레이어 기준 아래
 
         SpawnRect chosen = default;
         bool found = false;

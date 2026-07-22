@@ -19643,8 +19643,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemySpawner
   levelManager: {fileID: 11400000, guid: 2adbed65c0c1b704ea5fd565a988ba9b, type: 2}
-  MapSize: {x: 30, y: 30}
-  AroundPlayer: {x: 20, y: 20}
+  mapSize: {x: 29, y: 29}
+  aroundPlayer: {x: 10, y: 10}
   player: {fileID: 7907048}
 --- !u!1 &493392805
 GameObject:

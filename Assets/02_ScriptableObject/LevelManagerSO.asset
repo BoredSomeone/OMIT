@@ -15,12 +15,12 @@ MonoBehaviour:
   _baseRequireEXP: 25
   _baseNumSpawnEnemy: 1
   _baseSpawnEnemyDelay: 3
-  _level: 1
-  _nowEXP: 0
-  _requireEXP: 25
-  _baseHP: 105
+  _level: 3
+  _nowEXP: 1
+  _requireEXP: 26
+  _baseHP: 115
   _numEnemySpawn: 1
-  _enemySpawnDelay: 2.7
+  _enemySpawnDelay: 2.1
   _spawnInfos:
   - level: 1
     BossKey: 
@@ -30,9 +30,12 @@ MonoBehaviour:
       weight: 1
   - level: 3
     BossKey: 
-    EnemyWeights: []
+    EnemyWeights:
+    - TypeName: Enemy_AluminumCan, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      weight: 1
   _spawnInfo:
-    level: 1
+    level: 3
     BossKey: 
     EnemyWeights:
     - TypeName: Enemy_AluminumCan, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
@@ -41,6 +44,9 @@ MonoBehaviour:
   spawnBossEvent:
     m_PersistentCalls:
       m_Calls: []
-  SpawnInfoUpdateEvent:
+  spawnInfoUpdateEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  levelUpEvent:
     m_PersistentCalls:
       m_Calls: []
