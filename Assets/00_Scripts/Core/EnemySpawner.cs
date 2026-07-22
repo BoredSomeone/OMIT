@@ -26,6 +26,8 @@ public class EnemySpawner : MonoBehaviour
 
     private List<SpawnRect> rects = new();
 
+    private Vector3 farPosition = Vector3.one * 50000;
+
     private async void Start()
     {
         await AddressableManager.Instance.RegisterAsset("NormalEnemy");
@@ -124,7 +126,7 @@ public class EnemySpawner : MonoBehaviour
         GameObject obj = GetFromPool(type);
 
         if (obj.TryGetComponent<EnemyBase>(out var enemy))
-            enemy.InitEnemy(this, player, position);
+            enemy.InitEnemy(this, player, position, levelManager);
 
         return obj;
     }
@@ -150,7 +152,7 @@ public class EnemySpawner : MonoBehaviour
     ObjectPool<GameObject> InitPool(System.Type type)
     {
         return new ObjectPool<GameObject>(
-                createFunc: () => Instantiate(_poolPrefab[type]),
+                createFunc: () => Instantiate(_poolPrefab[type], farPosition, Quaternion.identity),
                 actionOnGet: obj => obj.SetActive(true),
                 actionOnRelease: obj => obj.SetActive(false),
                 actionOnDestroy: obj => Destroy(obj),

@@ -39,13 +39,27 @@ public class RangeCircleHandler : MonoBehaviour
 
     void UpdateRange()
     {
+        angle = Mathf.Clamp(angle, 0, 360);
         _rangeMaterial.SetFloat(angleId, angle);
-        circle.radius = radius;
-        triangle.pathCount = 1;
-        triangle.SetPath(0, DrawTriangle(angle, radius));
-        circleSpriteObject.localScale = Vector3.one * radius * 2;
 
+        circle.radius = radius;
         transform.localEulerAngles = new Vector3(0, 0, -angle / 2);
+        triangle.pathCount = 1;
+        circleSpriteObject.localScale = Vector3.one * radius * 2;
+        transform.localEulerAngles = new Vector3(0, 0, -angle / 2);
+
+        if (angle <= 180)
+        {
+            triangle.SetPath(0, DrawTriangle(angle, radius));
+            triangle.compositeOperation = Collider2D.CompositeOperation.Intersect;
+            triangle.transform.localRotation = Quaternion.identity;
+        }
+        else
+        {
+            triangle.SetPath(0, DrawTriangle(360 - angle, radius));
+            triangle.compositeOperation = Collider2D.CompositeOperation.Difference;
+            triangle.transform.localRotation = Quaternion.Euler(0, 0, angle - 360);
+        }
     }
 
     Vector2[] DrawTriangle(float angle, float radius)
@@ -65,4 +79,11 @@ public class RangeCircleHandler : MonoBehaviour
         points[2] = sign * new Vector2(-Mathf.Cos(rad), -Mathf.Sin(rad)) * radius / Mathf.Cos(rad / 2f);
         return points;
     }
+
+#if UNITY_EDITOR
+    private void OnValidate()
+    {
+        UpdateRange();
+    }
+#endif
 }

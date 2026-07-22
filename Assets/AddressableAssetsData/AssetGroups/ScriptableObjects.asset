@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: ScriptableObjects
+  m_EditorClassIdentifier: Unity.Addressables.Editor::UnityEditor.AddressableAssets.Settings.AddressableAssetGroup
+  m_GroupName: ScriptableObjects
+  m_GUID: facff532f6a21244b8026a9c31a44761
+  m_SerializeEntries:
+  - m_GUID: 2adbed65c0c1b704ea5fd565a988ba9b
+    m_Address: Assets/02_ScriptableObject/LevelManagerSO.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ScriptableObject
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8f786ac480bc31849abf1e83ccdca776
+    m_Address: Assets/02_ScriptableObject/PlayerDefaultDataSO.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ScriptableObject
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: baa6053d18221ad469c7ece5d43510d2
+    m_Address: Assets/02_ScriptableObject/UpgradeDataSO.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ScriptableObject
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bbe9898e1a68ace41a3e140c444a4d28
+    m_Address: Assets/02_ScriptableObject/EnemyExpTableSO.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ScriptableObject
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: ce3764cfc990c5344b7e0792f513c111, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: fe739ebf8ed8a7b42acf8df53e2460ac, type: 2}
+    - {fileID: 11400000, guid: 2770292e99627d842bbff41738a8c1d5, type: 2}

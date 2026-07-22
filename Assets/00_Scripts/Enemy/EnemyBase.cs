@@ -16,9 +16,9 @@ public class EnemyBase : MonoBehaviour, IHitable, IEnemyStats
     [SerializeField] private float moveSpeedRatio = 1;
 
     [SerializeField] Vector2 TargetOffset;
-    [SerializeField] protected LevelManagerSO levelManager;
     [SerializeField] protected int exp;
 
+    protected LevelManagerSO levelManager;
     private EnemySpawner _spawner;
     private CancellationTokenSource _spawnCts;
 
@@ -31,6 +31,8 @@ public class EnemyBase : MonoBehaviour, IHitable, IEnemyStats
     public Vector2 GetTargetPoint => (Vector2)transform.position + TargetOffset;
 
     protected CancellationToken spawnToken => _spawnCts.Token;
+
+    private Vector3 farPosition = Vector3.one * 50000;
 
     protected virtual void InitExp()
     {
@@ -47,12 +49,13 @@ public class EnemyBase : MonoBehaviour, IHitable, IEnemyStats
     /// <summary>
     /// 풀에서 꺼내져 스폰될 때 스포너가 호출합니다. 위치 세팅과 스탯/상태 초기화, 스폰 시점 취소 토큰 갱신을 모두 담당합니다.
     /// </summary>
-    public virtual void InitEnemy(EnemySpawner spawner, Transform player, Vector2 position)
+    public virtual void InitEnemy(EnemySpawner spawner, Transform player, Vector2 position, LevelManagerSO levelManager)
     {
         transform.position = position;
 
         _spawner = spawner;
         this.player = player;
+        this.levelManager = levelManager;
 
         _spawnCts?.Cancel();
         _spawnCts?.Dispose();
@@ -74,10 +77,17 @@ public class EnemyBase : MonoBehaviour, IHitable, IEnemyStats
             hpBar.value = _nowHP;
             hpBar.minValue = 0;
         }
+        OnStart();
+    }
+
+    protected virtual void OnStart()
+    {
+
     }
 
     protected virtual void OnDisable()
     {
+        transform.position = farPosition;
         _spawnCts?.Cancel();
     }
 
