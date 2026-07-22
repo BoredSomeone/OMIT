@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.UI;
 public class EnemyBase : MonoBehaviour, IHitable, IEnemyStats
@@ -19,6 +20,7 @@ public class EnemyBase : MonoBehaviour, IHitable, IEnemyStats
     [SerializeField] protected int exp;
 
     private EnemySpawner _spawner;
+    private CancellationTokenSource _spawnCts;
 
     public float getMoveSpeed => moveSpeedBase * moveSpeedRatio;
 
@@ -28,9 +30,7 @@ public class EnemyBase : MonoBehaviour, IHitable, IEnemyStats
     public Collider2D getCollider => _myCol;
     public Vector2 GetTargetPoint => (Vector2)transform.position + TargetOffset;
 
-    protected virtual void Start()
-    {
-    }
+    protected CancellationToken spawnToken => _spawnCts.Token;
 
     protected virtual void InitExp()
     {
@@ -45,12 +45,18 @@ public class EnemyBase : MonoBehaviour, IHitable, IEnemyStats
     }
 
     /// <summary>
-    /// 이 적을 생성/회수할 EnemySpawner를 등록합니다. 사망 시 풀로 반환하기 위해 사용됩니다.
+    /// 풀에서 꺼내져 스폰될 때 스포너가 호출합니다. 위치 세팅과 스탯/상태 초기화, 스폰 시점 취소 토큰 갱신을 모두 담당합니다.
     /// </summary>
-    public void InitEnemy(EnemySpawner spawner, Transform player)
+    public virtual void InitEnemy(EnemySpawner spawner, Transform player, Vector2 position)
     {
+        transform.position = position;
+
         _spawner = spawner;
         this.player = player;
+
+        _spawnCts?.Cancel();
+        _spawnCts?.Dispose();
+        _spawnCts = new CancellationTokenSource();
 
         _maxHP = Mathf.FloorToInt(levelManager.baseHP * hpScale);
         _nowHP = _maxHP;
@@ -68,6 +74,11 @@ public class EnemyBase : MonoBehaviour, IHitable, IEnemyStats
             hpBar.value = _nowHP;
             hpBar.minValue = 0;
         }
+    }
+
+    protected virtual void OnDisable()
+    {
+        _spawnCts?.Cancel();
     }
 
     public void Hit(int damage)

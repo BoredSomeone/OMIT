@@ -9,12 +9,11 @@ public class Enemy_AluminumCan : EnemyBase
     [SerializeField] float speed;
     [SerializeField] float dashInterval;
 
-    protected override void Start()
+    public override void InitEnemy(EnemySpawner spawner, Transform player, Vector2 position)
     {
-        base.Start();
+        base.InitEnemy(spawner, player, position);
 
-        var cancelToken = this.GetCancellationTokenOnDestroy();
-        Move(cancelToken).Forget();
+        Move(spawnToken).Forget();
     }
 
     protected override void InitExp()

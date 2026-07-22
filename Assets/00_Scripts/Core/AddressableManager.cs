@@ -27,7 +27,7 @@ public class AddressableManager
     /// <summary>
     /// label에 해당하는 GameObject 어드레서블을 전부 로드해 등록합니다.
     /// </summary>
-    public async UniTask RegistAsset(string label)
+    public async UniTask RegisterAsset(string label)
     {
         var locHandle = Addressables.LoadResourceLocationsAsync(label, typeof(GameObject));
         var locations = await locHandle;
@@ -48,7 +48,7 @@ public class AddressableManager
     /// <summary>
     /// key에 해당하는 GameObject 어드레서블 하나만 로드해 등록합니다. 이미 로드되어 있으면 건너뜁니다.
     /// </summary>
-    public async UniTask RegistAssetByKey(string key)
+    public async UniTask RegisterAssetByKey(string key)
     {
         if (_prefabs.ContainsKey(key))
             return;

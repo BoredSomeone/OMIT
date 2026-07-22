@@ -15,34 +15,34 @@ public class EnemySpawner : MonoBehaviour
     }
 
     private Dictionary<System.Type, IObjectPool<GameObject>> _poolDict = new();
-    private Dictionary<System.Type, GameObject> _poolPrepab = new();
+    private Dictionary<System.Type, GameObject> _poolPrefab = new();
     private Dictionary<System.Type, GameObject> _enemyPrefabsByType = new();
     private string _currentBossKey;
 
     [SerializeField] private LevelManagerSO levelManager;
-    [SerializeField] private Vector2 MapSize;
-    [SerializeField] private Vector2 AroundPlayer;
+    [SerializeField] private Vector2 mapSize;
+    [SerializeField] private Vector2 aroundPlayer;
     [SerializeField] private Transform player;
 
     private List<SpawnRect> rects = new();
 
     private async void Start()
     {
-        await AddressableManager.Instance.RegistAsset("NormalEnemy");
+        await AddressableManager.Instance.RegisterAsset("NormalEnemy");
         RebuildEnemyPrefabCache();
 
         var cancelToken = this.GetCancellationTokenOnDestroy();
         Spawner(cancelToken).Forget();
 
         levelManager.spawnBossEvent.AddListener(SpawnBoss);
-        levelManager.spawnInfoUpdateEvent.AddListener(RegistEnemy);
+        levelManager.spawnInfoUpdateEvent.AddListener(RegisterEnemy);
 
-        RegistEnemy();
+        RegisterEnemy();
     }
     private void OnDestroy()
     {
         levelManager.spawnBossEvent.RemoveListener(SpawnBoss);
-        levelManager.spawnInfoUpdateEvent.RemoveListener(RegistEnemy);
+        levelManager.spawnInfoUpdateEvent.RemoveListener(RegisterEnemy);
     }
 
     /// <summary>AddressableManager에 로드된 프리팹들을 EnemyBase 타입 기준으로 캐싱합니다.</summary>
@@ -69,7 +69,7 @@ public class EnemySpawner : MonoBehaviour
                     Spawn(levelManager.spawnInfo.SpawnTarget, SpawnablePoint());
                 }
             }
-            catch (System.Exception e)
+            catch (System.Exception e) when (e is not System.OperationCanceledException)
             {
                 Debug.LogError(e.ToString());
             }
@@ -78,7 +78,7 @@ public class EnemySpawner : MonoBehaviour
     }
 
     /// <summary>현재 레벨의 EnemyWeights에 맞춰 풀 등록용 프리팹 목록을 다시 구성합니다.</summary>
-    public void RegistEnemy()
+    public void RegisterEnemy()
     {
         ResetPool();
         foreach (var ew in levelManager.spawnInfo.EnemyWeights)
@@ -98,75 +98,86 @@ public class EnemySpawner : MonoBehaviour
     /// </summary>
     public void RegisterPrefab(System.Type type, GameObject prefab)
     {
-        _poolPrepab[type] = prefab;
+        _poolPrefab[type] = prefab;
     }
 
     public void ResetPool()
     {
-        _poolPrepab = new();
-    }
-
-    public GameObject SpawnTarget(System.Type type)
-    {
-        if (!_poolDict.ContainsKey(type))
-        {
-            _poolDict.Add(type, initPool(type));
-        }
-        return _poolDict[type].Get();
+        _poolPrefab = new();
     }
 
     /// <summary>
-    /// type에 해당하는 적을 풀에서 꺼내 position 위치에 생성합니다.
+    /// type에 해당하는 오브젝트를 풀에서 꺼냅니다.
+    /// </summary>
+    public GameObject GetFromPool(System.Type type)
+    {
+        return GetOrCreatePool(type).Get();
+    }
+
+    /// <summary>
+    /// type에 해당하는 적을 풀에서 꺼내 position 위치에 스폰합니다.
     /// </summary>
     public GameObject Spawn(System.Type type, Vector2 position)
     {
-        GameObject obj = SpawnTarget(type);
-        obj.transform.position = position;
+        GameObject obj = GetFromPool(type);
 
-        EnemyBase enemy = obj.GetComponent<EnemyBase>();
-        if (enemy != null)
-            enemy.InitEnemy(this, player);
+        if (obj.TryGetComponent<EnemyBase>(out var enemy))
+            enemy.InitEnemy(this, player, position);
 
         return obj;
     }
 
     public void ReleaseObject(System.Type type, GameObject obj)
     {
-        if (!_poolDict.ContainsKey(type))
-            _poolDict.Add(type, initPool(type));
-
-        _poolDict[type].Release(obj);
+        GetOrCreatePool(type).Release(obj);
     }
 
-    ObjectPool<GameObject> initPool(System.Type type)
+    private IObjectPool<GameObject> GetOrCreatePool(System.Type type)
+    {
+        if (!_poolDict.TryGetValue(type, out var pool))
+        {
+            pool = InitPool(type);
+            _poolDict.Add(type, pool);
+        }
+        return pool;
+    }
+
+    /// <summary>
+    /// type에 해당하는 오브젝트 풀을 생성합니다.
+    /// </summary>
+    ObjectPool<GameObject> InitPool(System.Type type)
     {
         return new ObjectPool<GameObject>(
-                createFunc: () => Instantiate(_poolPrepab[type]),
+                createFunc: () => Instantiate(_poolPrefab[type]),
                 actionOnGet: obj => obj.SetActive(true),
                 actionOnRelease: obj => obj.SetActive(false),
                 actionOnDestroy: obj => Destroy(obj),
-                defaultCapacity: 5,
+                defaultCapacity: 20,
                 maxSize: 300
                 );
     }
 
+    /// <summary>
+    /// 플레이어 주변에서 떨어져서 적을 스폰합니다
+    /// </summary>
+    /// <returns></returns>
     public Vector2 SpawnablePoint()
     {
         Vector2 center = player.position;
         SpawnRect mapRect = new SpawnRect
         {
-            left = -MapSize.x / 2,
-            right = MapSize.x / 2,
-            top = MapSize.y / 2,
-            bot = -MapSize.y / 2
+            left = -mapSize.x / 2,
+            right = mapSize.x / 2,
+            top = mapSize.y / 2,
+            bot = -mapSize.y / 2
         };
 
         SpawnRect playerRect = new SpawnRect
         {
-            left = center.x - AroundPlayer.x / 2,
-            right = center.x + AroundPlayer.x / 2,
-            top = center.y + AroundPlayer.y / 2,
-            bot = center.y - AroundPlayer.y / 2
+            left = center.x - aroundPlayer.x / 2,
+            right = center.x + aroundPlayer.x / 2,
+            top = center.y + aroundPlayer.y / 2,
+            bot = center.y - aroundPlayer.y / 2
         };
         rects.Clear();
         rects.Add(new SpawnRect
@@ -230,7 +241,7 @@ public class EnemySpawner : MonoBehaviour
         if (!string.IsNullOrEmpty(_currentBossKey) && _currentBossKey != bossKey)
             AddressableManager.Instance.ReleaseKey(_currentBossKey);
 
-        await AddressableManager.Instance.RegistAssetByKey(bossKey);
+        await AddressableManager.Instance.RegisterAssetByKey(bossKey);
         _currentBossKey = bossKey;
 
         GameObject bossObject = AddressableManager.Instance.GetPrefab(bossKey);
@@ -242,6 +253,6 @@ public class EnemySpawner : MonoBehaviour
 
         Vector2 pos = SpawnablePoint();
         Instantiate(bossObject, pos, Quaternion.identity);
-        Debug.Log("Boss is comming!!!");
+        Debug.Log("Boss is coming!!!");
     }
 }
