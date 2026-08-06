@@ -3,7 +3,7 @@ using UnityEngine;
 public class WeaponController : MonoBehaviour
 {
     [SerializeField] UpgradeDataSO upgradeData;
-    [SerializeField] Transform playerWeaponPosition;
+    [SerializeField] Transform playerWeaponAnchor;
     [SerializeField] Transform Player;
 
     private void FixedUpdate()
@@ -23,7 +23,7 @@ public class WeaponController : MonoBehaviour
     }
     void MoveSet()
     {
-        Vector3 target = playerWeaponPosition.position;
+        Vector3 target = playerWeaponAnchor.position;
         float moveSpeed = upgradeData.GetCached(UpgradeDataSO.StatType.WeaponMoveSpeed);
         float moveAccel = upgradeData.GetCached(UpgradeDataSO.StatType.WeaponMoveAccel);
         transform.position = Vector3.Lerp(transform.position, target, moveSpeed * moveAccel * Time.fixedDeltaTime);

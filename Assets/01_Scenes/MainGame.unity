@@ -893,7 +893,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerVisualController
   pc: {fileID: 7907047}
   WeaponOffset: 1
-  weaponPosition: {fileID: 42309926}
+  weaponAnchorSpeed: 5
+  weaponAnchor: {fileID: 42309926}
+  weaponAnchorControlType: 1
+  foundCount: 0
 --- !u!1 &14036211
 GameObject:
   m_ObjectHideFlags: 0
@@ -1906,7 +1909,7 @@ GameObject:
   - component: {fileID: 42309926}
   - component: {fileID: 42309927}
   m_Layer: 0
-  m_Name: WeaponPosition
+  m_Name: WeaponAnchor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2750,7 +2753,7 @@ MonoBehaviour:
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 119
 --- !u!114 &69057795
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11347,7 +11350,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WeaponController
   upgradeData: {fileID: 11400000, guid: baa6053d18221ad469c7ece5d43510d2, type: 2}
-  playerWeaponPosition: {fileID: 42309926}
+  playerWeaponAnchor: {fileID: 42309926}
   Player: {fileID: 7907048}
 --- !u!1 &289635983
 GameObject:
