@@ -92,13 +92,15 @@ public class LevelManagerSO : ScriptableObject
     public int numEnemySpawn { get { return _numEnemySpawn; } }
     public float enemySpawnDelay { get { return _enemySpawnDelay; } }
     public int requireEXP { get { return _requireEXP; } }
+    public int nowEXP { get { return _nowEXP; } }
 
     public SpawnInfo spawnInfo { get { return _spawnInfo; } }
 
 
     public UnityEvent<string> spawnBossEvent = new();
     public UnityEvent spawnInfoUpdateEvent = new();
-    public UnityEvent<int> levelUpEvent = new();
+    public UnityEvent expUpEvent = new();
+    public UnityEvent LevelUpEvent = new();
 
     private void OnEnable()
     {
@@ -111,13 +113,13 @@ public class LevelManagerSO : ScriptableObject
         _nowEXP += exp;
         if (requireEXP > 0)
         {
-            while (_nowEXP >= requireEXP)
+            while (nowEXP >= requireEXP)
             {
                 _nowEXP -= requireEXP;
                 LevelUp();
             }
         }
-        levelUpEvent.Invoke(_nowEXP);
+        expUpEvent.Invoke();
     }
 
     private int LevelUp()
@@ -126,7 +128,8 @@ public class LevelManagerSO : ScriptableObject
         Debug.Log($"LEVEL UP! -> {level}");
 
         ReCalcStats();
-        levelUpEvent?.Invoke(level);
+        expUpEvent?.Invoke();
+        LevelUpEvent?.Invoke();
         return level;
     }
 
@@ -134,15 +137,13 @@ public class LevelManagerSO : ScriptableObject
     {
         _level = level;
         ReCalcStats(false);
-
-        levelUpEvent.Invoke(_nowEXP);
     }
 
     public void ExpSet(int exp)
     {
         _nowEXP = exp;
 
-        levelUpEvent.Invoke(_nowEXP);
+        expUpEvent.Invoke();
     }
 
     public void ReCalcStats(bool triggerSpawnEvent = true)
@@ -154,6 +155,7 @@ public class LevelManagerSO : ScriptableObject
         _enemySpawnDelay = Mathf.Max(0.3f, _baseSpawnEnemyDelay - level * 0.3f);
 
         UpdateSpawnInfo(triggerSpawnEvent);
+        expUpEvent?.Invoke();
     }
 
     private void UpdateSpawnInfo(bool triggerSpawnEvent)

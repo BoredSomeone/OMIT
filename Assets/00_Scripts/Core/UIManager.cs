@@ -10,12 +10,13 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
-        levelManager.levelUpEvent.AddListener(UpdateExpUI);
+        levelManager.expUpEvent.AddListener(UpdateExpUI);
+        UpdateExpUI();
     }
 
-    public void UpdateExpUI(int nowExp)
+    public void UpdateExpUI()
     {
         expSlider.maxValue = levelManager.requireEXP;
-        expSlider.value = nowExp;
+        expSlider.value = levelManager.nowEXP;
     }
 }
