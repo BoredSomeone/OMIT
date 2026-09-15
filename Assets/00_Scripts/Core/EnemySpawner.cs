@@ -30,7 +30,7 @@ public class EnemySpawner : MonoBehaviour
 
     private async void Start()
     {
-        await AddressableManager.Instance.RegisterAsset("NormalEnemy");
+        await AddressableManager.Instance.RegisterAsset(AddressableLabels.NormalEnemy);
         RebuildEnemyPrefabCache();
 
         var cancelToken = this.GetCancellationTokenOnDestroy();
@@ -233,6 +233,7 @@ public class EnemySpawner : MonoBehaviour
 
         return new Vector2(Random.Range(chosen.left, chosen.right), Random.Range(chosen.bot, chosen.top));
     }
+
     /// <summary>보스 키에 해당하는 프리팹을 로드해 스폰하고, 이전 보스 에셋은 해제합니다.</summary>
     public async void SpawnBoss(string bossKey)
     {

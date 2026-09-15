@@ -31,7 +31,7 @@ public class RangeCircleHandler : MonoBehaviour
     }
 
     [Button]
-    public void ChangeRange(float angle, float radius)
+    private void ChangeRange(float angle, float radius)
     {
         upgradeData.ToUpgradeValue(UpgradeDataSO.StatType.SightAngle, false, angle);
         upgradeData.ToUpgradeValue(UpgradeDataSO.StatType.SightRadius, false, radius);

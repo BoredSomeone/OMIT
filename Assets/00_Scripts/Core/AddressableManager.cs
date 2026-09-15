@@ -4,6 +4,12 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
+public struct AddressableLabels
+{
+    public const string NormalEnemy = "NormalEnemy";
+    public const string ItemData = "ItemData";
+}
+
 public class AddressableManager
 {
     static AddressableManager _instance;

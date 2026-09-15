@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: PlayerUpgradeItem
+  m_EditorClassIdentifier: Unity.Addressables.Editor::UnityEditor.AddressableAssets.Settings.AddressableAssetGroup
+  m_GroupName: PlayerUpgradeItem
+  m_GUID: 7eebebc1a26dc484eac0e78c53805f63
+  m_SerializeEntries:
+  - m_GUID: d6b2f31236d7d684f8e7696415249130
+    m_Address: Assets/05_Datas/ItemDatas.json
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ItemData
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: ce3764cfc990c5344b7e0792f513c111, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: df82c9accdea0114f96b7dcbbb1b41c5, type: 2}
+    - {fileID: 11400000, guid: 37184cbb2eb077e4b99c2d43ab6bd2b7, type: 2}
