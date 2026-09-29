@@ -12,3 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb8e794aef86d204a8a3f4621f41986f, type: 3}
   m_Name: PauseManagerSO
   m_EditorClassIdentifier: Assembly-CSharp::PauseManagerSO
+  timeScaleManager: {fileID: 11400000, guid: e7792652bfe616b44a2dbcf7eec4bd36, type: 2}
+  _pauseCount: 0
+  pauseChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []

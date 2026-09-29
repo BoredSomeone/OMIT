@@ -47,14 +47,10 @@ public class PlayerController : MonoBehaviour
         downAction.canceled     += OnDownCanceled;
         leftAction.canceled     += OnLeftCanceled;
         rightAction.canceled    += OnRightCanceled;
-
-        EnableControl();
     }
 
     private void OnDestroy()
     {
-        DisableControl();
-
         upAction.performed      -= OnUpPerformed;
         downAction.performed    -= OnDownPerformed;
         leftAction.performed    -= OnLeftPerformed;
@@ -95,24 +91,6 @@ public class PlayerController : MonoBehaviour
             myrb.linearDamping = _breakDamping;
         else
             myrb.linearDamping = 0;
-    }
-
-    private void EnableControl()
-    {
-        actionAsset.Enable();
-
-        upAction.Enable();
-        downAction.Enable();
-        leftAction.Enable();
-        rightAction.Enable();
-    }
-
-    private void DisableControl()
-    {
-        upAction.Disable();
-        downAction.Disable();
-        leftAction.Disable();
-        rightAction.Disable();
     }
 
     private void Move()
