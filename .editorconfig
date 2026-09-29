@@ -1,0 +1,6 @@
+root = true
+
+# 소스코드는 BOM 없는 UTF-8 + CRLF로 저장
+[*.cs]
+charset = utf-8
+end_of_line = crlf

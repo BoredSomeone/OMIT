@@ -1,0 +1,14 @@
+﻿[
+  {
+    "id": "UI_Pause_Title",
+    "Korean": "잠깐만!",
+    "Japanese": "チョット！",
+    "English": "Wait!"
+  },
+  {
+    "id": "UI_Pause_Return",
+    "Korean": "다 쉬었어!",
+    "Japanese": "準備万全",
+    "English": "System All Green!"
+  }
+]

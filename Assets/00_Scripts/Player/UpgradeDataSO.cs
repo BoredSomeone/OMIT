@@ -5,7 +5,6 @@ using Cysharp.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using Sirenix.OdinInspector;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
 
 [CreateAssetMenu(fileName = "UpgradeDataSO", menuName = "Scriptable Objects/UpgradeDataSO")]
 public class UpgradeDataSO : SerializedScriptableObject
@@ -157,20 +156,10 @@ public class UpgradeDataSO : SerializedScriptableObject
         }
     }
 
+    /// <summary>ItemData 라벨의 JSON들을 일회성으로 로드해 ItemDict를 채움</summary>
     private async UniTask LoadItemInfos()
     {
-        var locHandle = Addressables.LoadResourceLocationsAsync(AddressableLabels.ItemData, typeof(TextAsset));
-        var locations = await locHandle;
-
-        foreach (var loc in locations)
-        {
-            var assetHandle = Addressables.LoadAssetAsync<TextAsset>(loc);
-            var textAsset = await assetHandle;
-            ParseItemData(textAsset.text);
-            Addressables.Release(assetHandle);
-        }
-
-        Addressables.Release(locHandle);
+        await AddressableManager.Instance.LoadOnce<TextAsset>(AddressableLabels.ItemData, textAsset => ParseItemData(textAsset.text));
     }
 
     /// <summary>ItemDatas.json 원본 배열을 id 기준으로 묶어 ItemDict를 채움</summary>
