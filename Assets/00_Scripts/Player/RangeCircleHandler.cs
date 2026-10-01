@@ -24,9 +24,21 @@ public class RangeCircleHandler : MonoBehaviour
             return;
         }
 
+        upgradeData.OnWeaponStatChanged += OnStatChanged;
+        OnStatChanged();
+    }
+
+    private void OnDestroy()
+    {
+        if (upgradeData != null)
+            upgradeData.OnWeaponStatChanged -= OnStatChanged;
+    }
+
+    /// <summary>UpgradeDataSO의 최종 시야 수치를 다시 읽어 범위를 갱신</summary>
+    private void OnStatChanged()
+    {
         angle = upgradeData.GetCached(UpgradeDataSO.StatType.SightAngle);
         radius = upgradeData.GetCached(UpgradeDataSO.StatType.SightRadius);
-        upgradeData.OnWeaponStatChanged += UpdateRange;
         UpdateRange();
     }
 

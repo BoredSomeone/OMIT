@@ -8,7 +8,13 @@
   {
     "id": "UI_Pause_Return",
     "Korean": "다 쉬었어!",
-    "Japanese": "準備万全",
+    "Japanese": "準備万全！",
     "English": "System All Green!"
+  },
+  {
+    "id": "UI_Test",
+    "Korean": "아아 마이크 테스트",
+    "Japanese": "業務連絡、業務連絡",
+    "English": "Mic test 1, 2, 3"
   }
 ]

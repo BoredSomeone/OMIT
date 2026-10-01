@@ -15,14 +15,8 @@ MonoBehaviour:
   m_GroupName: LocalizedData
   m_GUID: 94fec9f1fc1f3594d89d21fabd085833
   m_SerializeEntries:
-  - m_GUID: 73f0fcee393fba642964923cf00a2507
-    m_Address: Assets/06_LocalizationData/Txt_UI.json
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - LocalizedText
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 863c4556391d93548b1bfea9987688fd
-    m_Address: Assets/06_LocalizationData/Txt_Items.json
+  - m_GUID: 881ab5a042051934fab540f7580a3d16
+    m_Address: Assets/06_LocalizationData/TextData
     m_ReadOnly: 0
     m_SerializedLabels:
     - LocalizedText

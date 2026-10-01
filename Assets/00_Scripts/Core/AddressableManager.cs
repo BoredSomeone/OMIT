@@ -11,7 +11,6 @@ using Object = UnityEngine.Object;
 public struct AddressableLabels
 {
     public const string NormalEnemy = "NormalEnemy";
-    public const string ItemData = "ItemData";
     public const string LocalizedText = "LocalizedText";
 }
 

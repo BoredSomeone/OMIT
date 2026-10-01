@@ -1,0 +1,62 @@
+﻿[
+  {
+    "id": "CITEM_AttackDamage",
+    "Korean": "피해량",
+    "Japanese": "ダメージ",
+    "English": "Damage"
+  },
+  {
+    "id": "CITEM_AttackSpeed",
+    "Korean": "공격 속도",
+    "Japanese": "攻撃速度",
+    "English": "Attack Speed"
+  },
+  {
+    "id": "CITEM_SightAngle",
+    "Korean": "무기 시야각",
+    "Japanese": "武器視野角",
+    "English": "Weapon Sight Angle"
+  },
+  {
+    "id": "CITEM_SightRadius",
+    "Korean": "무기 시야 범위",
+    "Japanese": "武器視野範囲",
+    "English": "Weapon Sight Range"
+  },
+  {
+    "id": "CITEM_BulletSpeed",
+    "Korean": "탄환 속도",
+    "Japanese": "弾速",
+    "English": "Bullet Speed"
+  },
+  {
+    "id": "CITEM_MoveSpeed",
+    "Korean": "이동 속도",
+    "Japanese": "移動速度",
+    "English": "Move Speed"
+  },
+  {
+    "id": "CITEM_WeaponMoveSpeed",
+    "Korean": "무기 이동 속도",
+    "Japanese": "武器移動速度",
+    "English": "Weapon Move Speed"
+  },
+  {
+    "id": "CITEM_WeaponMoveAccel",
+    "Korean": "무기 이동 가속도",
+    "Japanese": "武器移動加速度",
+    "English": "Weapon Move Acceleration"
+  },
+  {
+    "id": "CITEM_WeaponRotateSpeed",
+    "Korean": "무기 회전 속도",
+    "Japanese": "武器回転速度",
+    "English": "Weapon Rotation Speed"
+  },
+  {
+    "id": "CITEM_WeaponRotateAccel",
+    "Korean": "무기 회전 가속도",
+    "Japanese": "武器回転加速度",
+    "English": "Weapon Rotation Acceleration"
+  }
+]

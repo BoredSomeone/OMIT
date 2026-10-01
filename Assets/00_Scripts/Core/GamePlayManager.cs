@@ -12,8 +12,8 @@ public class GamePlayManager : MonoBehaviour
     [SerializeField] private SettingManagerSO settingManager;
     [SerializeField] private LocalizedDataSO localizedData;
     [SerializeField] private InputManagerSO inputManager;
-    [SerializeField] private UIStackManager uiStack;
 
+    [SerializeField] private UIStackManager uiStack;
     [SerializeField] private UIPanel pauseUI;
     [SerializeField] private UIPanel levelUpUI;
 
