@@ -14,12 +14,12 @@ A roguelike game featuring indirect-movement weapons
 - [x] Player movement
 - [x] Weapon system
 - [x] Basic enemies
+- [x] Enemy spawning
+- [x] Pause, time control, etc.
 
 **In Progress**
-- [ ] Enemy spawning
 - [ ] Upgrades and experience
 - [ ] Inventory
-- [ ] Level curve
 - [ ] Network communication
 
 ## Tech Stack
