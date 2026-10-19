@@ -1,7 +1,7 @@
 [한국어](../README.md) | [English](README.en.md) | [日本語](README.ja.md)
 
 # OMIT
-Oneul-ui Master's Impeccable Tailoring  
+Orchestrated, Mutji-go, and Intentional Tactics
 A roguelike game featuring indirect-movement weapons
 
 ## Core Concept

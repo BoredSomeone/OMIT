@@ -1,7 +1,7 @@
 [한국어](README.md) | [English](READMEs/README.en.md) | [日本語](READMEs/README.ja.md)
 
 # OMIT
-Oneul-ui Master's Impeccable Tailoring  
+Orchestrated, Mutji-go, and Intentional Tactics
 간접 이동 무기를 활용하는 로그라이크 게임
 
 ## 핵심 콘셉트
