@@ -7,11 +7,11 @@ using UnityEngine.InputSystem;
 
 /// <summary>
 /// 모달 UI 패널(UIPanel)을 스택으로 관리.
-/// 맨 위 패널만 상호작용/선택 가능하며, 스택 상태에 따라 일시정지와 액션 맵(비었으면 Player, 아니면 UI)을 전환한다.
+/// 맨 위 패널만 상호작용/선택 가능하며, 스택 상태에 따라 액션 맵(비었으면 Player, 아니면 UI)을 전환한다.
+/// 일시정지는 각 UIPanel이 Open/Close에서 처리한다.
 /// </summary>
 public class UIStackManager : MonoBehaviour
 {
-    [SerializeField] private PauseManagerSO pauseManager;
     [SerializeField] private InputManagerSO inputManager;
 
     [SerializeField, ReadOnly] private List<UIPanel> _stack = new();
@@ -74,10 +74,9 @@ public class UIStackManager : MonoBehaviour
             prevTop.SetInteractable(false);
 
         _stack.Add(panel);
+        panel.ownerStack = this;
         panel.Open();
 
-        if (panel.pauseGame)
-            pauseManager.Pause();
         if (_stack.Count == 1)
             inputManager.SwitchMap(InputManagerSO.InputMapType.UI);
     }
@@ -97,10 +96,8 @@ public class UIStackManager : MonoBehaviour
 
         bool wasTop = index == _stack.Count - 1;
         _stack.RemoveAt(index);
+        panel.ownerStack = null;
         panel.Close();
-
-        if (panel.pauseGame)
-            pauseManager.Play();
 
         var nowTop = top;
         if (wasTop && nowTop != null)

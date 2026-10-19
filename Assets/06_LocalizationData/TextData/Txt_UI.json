@@ -16,5 +16,11 @@
     "Korean": "아아 마이크 테스트",
     "Japanese": "業務連絡、業務連絡",
     "English": "Mic test 1, 2, 3"
+  },
+  {
+    "id": "UI_Skip_Level_Item",
+    "Korean": "필요없어!",
+    "Japanese": "いらない",
+    "English": "I don't need it"
   }
 ]

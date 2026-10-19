@@ -523,6 +523,8 @@ public class LocalizedDataSO : ScriptableObject
         IsReady = true;
 
         OnLanguageChangedEvent?.Invoke();
+
+        Debug.Log("언어 파일 불러옴");
     }
 
     /// <summary>
