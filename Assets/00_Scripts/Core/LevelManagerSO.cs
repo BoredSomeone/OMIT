@@ -63,7 +63,7 @@ public class LevelManagerSO : ScriptableObject
                     var type = ew.targetType;
                     if (type is null) continue;
                     runningTotal += ew.weight;
-                    if (UnityEngine.Random.Range(0, ew.weight) < ew.weight)
+                    if (UnityEngine.Random.Range(0, runningTotal) < ew.weight)
                         chosen = type;
                 }
                 return chosen;
